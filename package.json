@@ -1,0 +1,32 @@
+{
+  "name": "management-system-mern",
+  "version": "1.0.0",
+  "description": "discord group project for a management system",
+  "main": "index.js",
+  "scripts": {
+    "dev": "env NODE_ENV=development nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "author": "Discord Group",
+  "license": "MIT",
+  "dependencies": {
+    "@sendgrid/mail": "^7.4.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.10.15",
+    "nodemailer": "^6.4.16",
+    "nodemailer-sendgrid": "^1.0.3",
+    "password-validator": "^5.1.1",
+    "uuid": "^8.3.1",
+    "validator": "^13.1.17"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
