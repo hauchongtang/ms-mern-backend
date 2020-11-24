@@ -32,20 +32,30 @@ router.get('/users/:id', (req, res) => {
     })
 })
 
-router.get('/activation/:activationKey', (req, res) => {
-  const activationK = req.query.params
+router.get('/activation/:activationKey', async (req, res) => {
+  const { activationKey } = req.params
 
-  User.find({ activationKey: activationK })
-    .then((user) => {
-      if (!user) {
-        return res.status(400).send()
-      }
+  const user = await User.findOne({ activationKey })
+  console.log(user)
 
-      res.send(user)
-    })
-    .catch((e) => {
-      res.status(500).send()
-    })
+  if (!user) {
+    return res.status(400).send()
+  }
+
+  const { activatedDateTime, email } = user
+
+  if (activatedDateTime) {
+    return res.status(400).send()
+  }
+
+  const dateNow = Date.now().toString()
+
+  await User.updateOne(
+    { activationKey },
+    { activatedDateTime: dateNow, lastUpdated: dateNow }
+  )
+
+  return res.status(200).send()
 })
 
 router.post('/users', async (req, res) => {
