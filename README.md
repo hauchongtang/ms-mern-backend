@@ -66,7 +66,7 @@
 
 ### Authentication
 
-- Registration - `POST /api/users`
+#### Registration - `POST /api/users`
 
 ```javascript
 // Request Body
@@ -89,5 +89,20 @@
 
 400: "Missing either email or password in request body"
 
-400: "Password does not meet requirements"
+404: "Password does not meet requirements"
+
+404: "Activation code already used"
+```
+
+---
+
+#### Activation - `GET /api/activation/:activationCode`
+
+```javascript
+// Response Status Codes
+200: "Successful activation"
+
+400: "activationCode parameter missing"
+
+404: "No activation code found"
 ```

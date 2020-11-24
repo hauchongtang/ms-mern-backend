@@ -35,17 +35,21 @@ router.get('/users/:id', (req, res) => {
 router.get('/activation/:activationKey', async (req, res) => {
   const { activationKey } = req.params
 
+  if (!activationKey) {
+    return res.status(400).send()
+  }
+
   const user = await User.findOne({ activationKey })
   console.log(user)
 
   if (!user) {
-    return res.status(400).send()
+    return res.status(404).send()
   }
 
   const { activatedDateTime, email } = user
 
   if (activatedDateTime) {
-    return res.status(400).send()
+    return res.status(404).send()
   }
 
   const dateNow = Date.now().toString()
