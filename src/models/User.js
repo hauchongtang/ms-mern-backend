@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 const { v4: uuidv4 } = require('uuid');
-
 const passwordValidator = require('password-validator');
 const validator = require('validator');
 
@@ -48,7 +47,6 @@ const userSchema = new mongoose.Schema({
       default: null
     }
 });
-
 
 
 const User = mongoose.model('User', userSchema);

@@ -1,11 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const { sendConfirmationEmail } = require('../utils/account')
 const bcrypt = require('bcryptjs')
+require('dotenv').config()
+
 
 router.get('/users', async (req, res) => {
   try {
@@ -43,8 +44,7 @@ router.get('/activation/:activationKey', async (req, res) => {
   console.log(user)
 
   if (!user) {
-    return res.status(404).send()
-  }
+    return res.status(404).send()}
 
   const { activatedDateTime, email } = user
 
@@ -70,15 +70,15 @@ router.post('/users', async (req, res) => {
   if (!email || !password) {
     return res
       .status(400)
-      .send({ error: 'Please fill the required missing fields.' })
+      .send({ error: "Please fill the required missing fields." })
   } else if (!digit.test(password) || !upperLetter.test(password)) {
     return res.status(400).send({
       error:
-        'Please enter at least a number and an uppercase letter with your password.',
+        "Please enter at least a number and an uppercase letter with your password.",
     })
   } else if (password.length < 8) {
     return res.status(400).send({
-      error: 'Please enter a password that is at least 8 or more characters.',
+      error: "Please enter a password that is at least 8 or more characters.",
     })
   }
 
@@ -88,10 +88,10 @@ router.post('/users', async (req, res) => {
     console.log(userExists)
 
     if (userExists.length > 0) {
-      return res.status(400).send({ error: 'User already exists' })
+      return res.status(400).send({ error: "User already exists" })
     }
 
-    let encPassword = ''
+    let encPassword = ""
     let theSalt = await bcrypt.genSalt(10)
     encPassword = await bcrypt.hash(password, theSalt)
 
@@ -102,12 +102,45 @@ router.post('/users', async (req, res) => {
     const user = new User(registrationRequest)
     await user.save()
     sendConfirmationEmail(user)
-    res.status(200).send('Successful registration')
+    res.status(200).send("Successful registration")
   } catch (e) {
     res.status(400).send(e)
   }
 })
 
+router.post('/login', async (req, res) => {
+  
+    try {    
+      const { email, password } = req.body
+  if (!email && !password) {
+    return res
+      .status(400)
+      .send({ error: 'Please enter both your email and password.'})
+  }
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res
+        .status(400)
+        .send({ error: "Email does not exists. "})
+    } else if (user.email === email) {
+      passwordCompare = await bcrypt.compare(password, user.password)
+        if (!passwordCompare) {
+          return res
+            .status(400)
+            .send({ error: "Wrong password. "})
+        } else if (passwordCompare) {
+            const dateNow = Date.now().toString()
+            await user.updateOne( { lastUpdated: dateNow } )
+
+            const token = await jwt.sign( {"email": user.email, "id": user.id } , process.env.ACCESS_TOKEN_SECRET)
+            return res
+              .status(200)
+              .json({token: token})
+        }
+    }} catch (e) {
+      res.status(400).send(e)
+    }})
+  
 /*
 router.patch('/users/:id', async (req, res) => {
     try {
