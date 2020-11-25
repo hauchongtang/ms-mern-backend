@@ -5,7 +5,7 @@ const { getMaxListeners } = require('../models/User')
 
 const transport = nodemailer.createTransport(
   nodemailerSendgrid({
-    apiKey: process.env.SENDGRID_API_KEY,
+    apiKey: process.env.SENDGRID_API_KEY
   })
 )
 
