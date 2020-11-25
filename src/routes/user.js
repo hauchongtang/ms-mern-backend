@@ -136,6 +136,7 @@ router.post('/login', async (req, res) => {
         // await user.updateOne({ lastUpdated: dateNow })
         const userProfile = await UserProfile.findOne({ userId: user._id })
         await userProfile.updateOne({ lastActivity: dateNow })
+        await user.updateOne({ lastActivity: dateNow })
 
         const token = await jwt.sign(
           { email: user.email, id: user.id },
