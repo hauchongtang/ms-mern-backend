@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
-const userKeySchema = new mongoose.Schema.mongoose({
+const userKeySchema = new mongoose.Schema({
     key: {
         type: String,
         default: uuidv4
     },
     userId: {
         type: String,
-        default: uuidv4
+        default: null
     },
     keyType: {
-        type: String
+        type: String,
+        default: null
     }
 })
 
