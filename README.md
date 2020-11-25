@@ -64,6 +64,20 @@
 }
 ```
 
+- User Key
+
+```javascript
+{
+  key: UUID,
+  userId: UUID,
+  keyType: String
+}
+```
+
+- Key Types include:
+  - 'forgot-password'
+  - 'team-invite'
+
 ### Authentication
 
 #### Registration - `POST /api/users`
@@ -105,4 +119,32 @@
 400: "activationCode parameter missing"
 
 404: "No activation code found"
+```
+
+---
+
+#### Login - `POST /api/login`
+
+```javascript
+// Request Body
+{
+  email: String,
+  password: String
+}
+```
+
+```javascript
+// Response Body
+{
+  token
+}
+```
+
+```javascript
+// Response Status Codes
+200: "Successful Login"
+
+400: "Missing email or password in request body"
+
+404: "Incorrect username or password"
 ```
